@@ -32,7 +32,7 @@ module Decidim
 
       # Dates 
       def same_date?
-	      debate.start_time.strftime("%d%m") == debate.end_time.strftime("%d%m")
+	      debate.start_time.strftime("%d%m%") == debate.end_time.strftime("%d%m")
       end
 
       # Returns a TreeNode to be used in the list filters to filter debates by
