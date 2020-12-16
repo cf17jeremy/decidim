@@ -34,9 +34,9 @@ describe "Debate dates", versioning: true, type: :system do
   end
 
   context "when starting and ending same day but different month" do
-    debate.start_time = Time.current - 1.month
     it "shows two days" do
       within ".extra__date" do
+        debate.start_time = Time.current - 1.month
         expect(page).to have_content(debate.start_time.strftime("%d"))
         expect(page).to have_content(debate.start_time.strftime("%H:%M"))
         expect(page).to have_content(debate.end_time.strftime("%d"))
@@ -46,6 +46,7 @@ describe "Debate dates", versioning: true, type: :system do
 
     it "shows two dates" do
       within ".extra__date" do
+        debate.start_time = Time.current - 1.month
         expect(debate.start_time("%d")).to eq(debate.end_time.strftime("%d"))
         expect(debate.start_time("%M")).not_to eq(debate.end_time.strftime("%M"))
       end
@@ -53,8 +54,8 @@ describe "Debate dates", versioning: true, type: :system do
   end
 
   context "when starting and ending on different day" do
-    debate.start_time = Time.current - 1.day.ago
     it "shows two days" do
+      debate.start_time = Time.current - 1.day.ago
       expect(page).to have_content(debate.start_time.strftime("%d"))
       expect(page).to have_content(debate.start_time.strftime("%H:%M"))
       expect(page).to have_content(debate.end_time.strftime("%d"))
@@ -62,6 +63,7 @@ describe "Debate dates", versioning: true, type: :system do
     end
 
     it "shows two dates" do
+      debate.start_time = Time.current - 1.day.ago
       expect(debate.start_time("%d%M")).not_to eq(debate.end_time.strftime("%d%M"))
     end
   end
