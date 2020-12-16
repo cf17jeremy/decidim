@@ -18,19 +18,51 @@ describe "Debate dates", versioning: true, type: :system do
   context "when starting and ending on same day" do
     it "shows one day only" do
       within ".extra__date" do
-        expect(page).to have_content(start_time.strftime("%h"))
+        expect(page).to have_content(debate.start_time.strftime("%d"))
+        expect(page).to have_content(debate.start_time.strftime("%H:%M"))
+        expect(page).to have_content(debate.end_time.strftime("%H:%M"))
       end
     end
 
     it "shows two hours" do
+      within ".extra__date" do
+        expect(debate.start_time("%H")).to be <debate.end_time.strftime("%H")
+        expect(debate.end_time("%H")).to be > debate.start_time.strftime("%H")
+        expect(debate.start_time("%M%Y")).to eq(debate.end_time.strftime("%M%Y"))
+      end
     end
   end
 
   context "when starting and ending same day but different month" do
+    debate.start_time = Time.current - 1.month
     it "shows two days" do
+      within ".extra__date" do
+        expect(page).to have_content(debate.start_time.strftime("%d"))
+        expect(page).to have_content(debate.start_time.strftime("%H:%M"))
+        expect(page).to have_content(debate.end_time.strftime("%d"))
+        expect(page).to have_content(debate.end_time.strftime("%H:%M"))
+      end
     end
 
-    it "shows two hours" do
+    it "shows two dates" do
+      within ".extra__date" do
+        expect(debate.start_time("%d")).to eq(debate.end_time.strftime("%d"))
+        expect(debate.start_time("%M")).not_to eq(debate.end_time.strftime("%M"))
+      end
+    end
+  end
+
+  context "when starting and ending on different day" do
+    debate.start_time = Time.current - 1.day.ago
+    it "shows two days" do
+      expect(page).to have_content(debate.start_time.strftime("%d"))
+      expect(page).to have_content(debate.start_time.strftime("%H:%M"))
+      expect(page).to have_content(debate.end_time.strftime("%d"))
+      expect(page).to have_content(debate.end_time.strftime("%H:%M"))
+    end
+
+    it "shows two dates" do
+      expect(debate.start_time("%d%M")).not_to eq(debate.end_time.strftime("%d%M"))
     end
   end
 end
