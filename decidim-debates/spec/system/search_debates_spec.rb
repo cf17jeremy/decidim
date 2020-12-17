@@ -13,5 +13,6 @@ describe "Search debates", type: :system do
     hashtag_debate = create(:debate, component: component, title: { en: "A debate with a hashtag #{hashtag}" })
     searchables << hashtag_debate
   end
+
   include_examples "searchable results"
 end

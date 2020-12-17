@@ -43,7 +43,6 @@ edit_link(
     <% end %>
     <div class="card extra">
       <div class="card__content--multiple">
-        <% if debate.start_time.present? && debate.end_time.present? %>
           <div class="extra__date">
             <% if same_date? %>
           <div>
@@ -62,8 +61,6 @@ edit_link(
           </div>
         <% end %>
       </div>
-        <% end %>
-
         <% if endorsements_enabled? && allowed_to?(:endorse, :debate, debate: debate) %>
           <div class="row collapse buttons__row">
             <div class="column small-12 collapse">

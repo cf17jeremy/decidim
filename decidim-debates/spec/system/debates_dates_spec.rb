@@ -26,17 +26,17 @@ describe "Debate dates", versioning: true, type: :system do
 
     it "shows two hours" do
       within ".extra__date" do
-        expect(debate.start_time("%H")).to be <debate.end_time.strftime("%H")
-        expect(debate.end_time("%H")).to be > debate.start_time.strftime("%H")
-        expect(debate.start_time("%M%Y")).to eq(debate.end_time.strftime("%M%Y"))
+        expect(debate.start_time.strftime("%H")).to be < debate.end_time.strftime("%H")
+        expect(debate.start_time.strftime("%m%Y")).to eq(debate.end_time.strftime("%m%Y"))
       end
     end
   end
 
   context "when starting and ending same day but different month" do
+    let(:start_time) { Time.current - 1.month }
+
     it "shows two days" do
       within ".extra__date" do
-        debate.start_time = Time.current - 1.month
         expect(page).to have_content(debate.start_time.strftime("%d"))
         expect(page).to have_content(debate.start_time.strftime("%H:%M"))
         expect(page).to have_content(debate.end_time.strftime("%d"))
@@ -46,25 +46,28 @@ describe "Debate dates", versioning: true, type: :system do
 
     it "shows two dates" do
       within ".extra__date" do
-        debate.start_time = Time.current - 1.month
-        expect(debate.start_time("%d")).to eq(debate.end_time.strftime("%d"))
-        expect(debate.start_time("%M")).not_to eq(debate.end_time.strftime("%M"))
+        expect(debate.start_time.strftime("%d")).to eq(debate.end_time.strftime("%d"))
+        expect(debate.start_time.strftime("%m")).not_to eq(debate.end_time.strftime("%m"))
       end
     end
   end
 
   context "when starting and ending on different day" do
+    let(:start_time) { Time.current - 1.day }
+
     it "shows two days" do
-      debate.start_time = Time.current - 1.day.ago
-      expect(page).to have_content(debate.start_time.strftime("%d"))
-      expect(page).to have_content(debate.start_time.strftime("%H:%M"))
-      expect(page).to have_content(debate.end_time.strftime("%d"))
-      expect(page).to have_content(debate.end_time.strftime("%H:%M"))
+      within ".extra__date" do
+        expect(page).to have_content(debate.start_time.strftime("%d"))
+        expect(page).to have_content(debate.start_time.strftime("%H:%M"))
+        expect(page).to have_content(debate.end_time.strftime("%d"))
+        expect(page).to have_content(debate.end_time.strftime("%H:%M"))
+      end
     end
 
     it "shows two dates" do
-      debate.start_time = Time.current - 1.day.ago
-      expect(debate.start_time("%d%M")).not_to eq(debate.end_time.strftime("%d%M"))
+      within ".extra__date" do
+        expect(debate.start_time.strftime("%d%m")).not_to eq(debate.end_time.strftime("%d%m"))
+      end
     end
   end
 end
