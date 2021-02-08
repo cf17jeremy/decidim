@@ -5,7 +5,6 @@ require "spec_helper"
 describe "Debate dates", versioning: true, type: :system do
   include_context "with a component"
   let(:manifest_name) { "debates" }
-
   let!(:debate) { create(:debate, component: component, start_time: start_time, end_time: end_time) }
   let(:start_time) { Time.current - 1.hour }
   let(:end_time) { Time.current }
